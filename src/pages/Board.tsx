@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react';
 import apis from '../plugins/apis';
 
 const Board = () => {
-  const [list, setList]= useState<any[]>([])
+  const [list, setList] = useState<any[]>([])
   const [inputs, setInputs] = useState({
     title: '',
     body: ''
   });
 
-  const { title, body } = inputs; 
+  const { title, body } = inputs;
 
   useEffect(() => {
     onLoad()
@@ -31,9 +31,9 @@ const Board = () => {
     }
   }
 
-  const onChange: React.ChangeEventHandler<HTMLInputElement> = (e): void  => {
-    const { value, name } = e.target; 
-    console.log('onchange')
+  const onChange: React.ChangeEventHandler<HTMLInputElement> = (e): void => {
+    const { value, name } = e.target;
+    console.log('onchange', value)
     setInputs({
       ...inputs,
       [name]: value
@@ -45,24 +45,24 @@ const Board = () => {
       url: '/bbs/write',
       method: 'post',
       data: {
-        title:title, body:body
+        title: title, body: body
       }
     })
     if (result) {
-      setInputs({title:'', body:''})
+      setInputs({ title: '', body: '' })
     }
   }
 
   return (
     <div>
       <h2>board</h2>
-      <input onChange={onChange} value={title} />
-      <input onChange={onChange} value={body} />
+      <input name="title" onChange={onChange} value={title} />
+      <input name="body" onChange={onChange} value={body} />
       <button type="button" onClick={onWrite}>
         write
       </button>
       <ul>
-        {list.map((v, idx) => 
+        {list.map((v, idx) =>
           <li key={idx}>{v.title} <button>del</button></li>
         )}
       </ul>
