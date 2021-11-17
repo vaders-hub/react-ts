@@ -39,6 +39,28 @@ const Signin = () => {
     })
     console.log('result', result)
   }
+
+  const onEnc = async (): Promise<any> => {
+    const result = await apis({
+      url: '/members/enc',
+      method: 'post',
+      data: {
+        mempw: mempw
+      }
+    })
+    console.log('enc result', result.data)
+  }
+
+  const onDec = async (): Promise<any> => {
+    const result = await apis({
+      url: '/members/dec',
+      method: 'post',
+      data: {
+        memid: memid
+      }
+    })
+    console.log('dec result', result.data)
+  }
   
   return (
     <div>
@@ -48,6 +70,12 @@ const Signin = () => {
         <input type="password" name="mempw" placeholder="pw" onChange={onChange} value={mempw}/>
         <button type="button" onClick={onSignin}>
           sign-in
+        </button>
+        <button type="button" onClick={onEnc}>
+          enc
+        </button>
+        <button type="button" onClick={onDec}>
+          dec
         </button>
       </div>
     </div>
