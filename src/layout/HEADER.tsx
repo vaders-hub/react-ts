@@ -5,6 +5,7 @@ function HEADER() {
     <>
       <Link to="/">main </Link>
       <Link to="/register">register </Link>
+      <Link to="/signin">signin </Link>
       <Link to="/board">board </Link>
     </>
   )

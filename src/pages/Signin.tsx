@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import apis from '../plugins/apis';
 
-const Register = () => {
+const Signin = () => {
   const [inputs, setInputs] = useState({
     memid: '',
     mempw: ''
@@ -29,9 +29,9 @@ const Register = () => {
     });
   }
 
-  const onRegister = async (): Promise<any> => {
+  const onSignin = async (): Promise<any> => {
     const result = await apis({
-      url: '/members/signup',
+      url: '/members/signin',
       method: 'post',
       data: {
         memid: memid, mempw: mempw
@@ -42,16 +42,16 @@ const Register = () => {
   
   return (
     <div>
-      <h2>Register</h2>
+      <h2>Signin</h2>
       <div>
         <input type="text" name="memid" placeholder="id" onChange={onChange} value={memid} />
         <input type="password" name="mempw" placeholder="pw" onChange={onChange} value={mempw}/>
-        <button type="button" onClick={onRegister}>
-          register
+        <button type="button" onClick={onSignin}>
+          sign-in
         </button>
       </div>
     </div>
   );
 }
 
-export default Register;
+export default Signin;
