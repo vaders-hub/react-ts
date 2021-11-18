@@ -1,57 +1,67 @@
-import { useEffect, useState } from 'react';
-import apis from '../plugins/apis';
+import { useEffect, useState } from "react";
+import apis from "../plugins/apis";
 
 const Board = () => {
-  const [list, setList] = useState<any[]>([])
+  const [list, setList] = useState<any[]>([]);
   const [inputs, setInputs] = useState({
-    title: '',
-    body: ''
+    title: "",
+    body: "",
   });
 
   const { title, body } = inputs;
 
   useEffect(() => {
-    onLoad()
-    console.log('mounted')
+    onLoad();
+    console.log("mounted");
     return () => {
-      console.log('unmount')
+      console.log("unmount");
     };
   }, []);
 
   const onLoad = async (): Promise<any> => {
     const result = await apis({
-      url: '/bbs/read',
-      method: 'get',
-      data: {
-      }
-    })
+      url: "/bbs/read",
+      method: "get",
+      data: {},
+    });
     if (result) {
-      const { data } = result
-      setList(data.body)
+      const { data } = result;
+      setList(data.body);
     }
-  }
+  };
+
+  const testtoken = async (): Promise<any> => {
+    const result = await apis({
+      url: "/bbs/test-token",
+      method: "get",
+      data: {},
+    });
+    if (result) {
+    }
+  };
 
   const onChange: React.ChangeEventHandler<HTMLInputElement> = (e): void => {
     const { value, name } = e.target;
-    console.log('onchange', value)
+    console.log("onchange", value);
     setInputs({
       ...inputs,
-      [name]: value
+      [name]: value,
     });
-  }
+  };
 
   const onWrite = async (): Promise<any> => {
     const result = await apis({
-      url: '/bbs/write',
-      method: 'post',
+      url: "/bbs/write",
+      method: "post",
       data: {
-        title: title, body: body
-      }
-    })
+        title: title,
+        body: body,
+      },
+    });
     if (result) {
-      setInputs({ title: '', body: '' })
+      setInputs({ title: "", body: "" });
     }
-  }
+  };
 
   return (
     <div>
@@ -61,13 +71,18 @@ const Board = () => {
       <button type="button" onClick={onWrite}>
         write
       </button>
+      <button type="button" onClick={testtoken}>
+        testtoken
+      </button>
       <ul>
-        {list.map((v, idx) =>
-          <li key={idx}>{v.title} <button>del</button></li>
-        )}
+        {list.map((v, idx) => (
+          <li key={idx}>
+            {v.title} <button>del</button>
+          </li>
+        ))}
       </ul>
     </div>
   );
-}
+};
 
 export default Board;

@@ -1,28 +1,32 @@
-import Axios from 'axios';
+import Axios from "axios";
 
+let acTkn = "";
 const apis = Axios.create({
-  baseURL: 'https://localhost:443',
+  baseURL: "https://localhost:443",
   timeout: 5000,
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
+    "x-access-token": acTkn,
   },
 });
 
 apis.interceptors.request.use(
-  config => {
+  (config: any) => {
+    config.headers["x-access-token"] = acTkn;
     return config;
   },
-  err => {
+  (err) => {
     return Promise.reject(err);
-  },
+  }
 );
 apis.interceptors.response.use(
-  config => {
+  (config) => {
+    if (config.data && config.data.accessToken) acTkn = config.data.accessToken;
     return config;
   },
-  err => {
+  (err) => {
     return Promise.reject(err);
-  },
+  }
 );
 
 export default apis;
