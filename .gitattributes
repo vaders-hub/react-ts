@@ -5,6 +5,7 @@
 *.java   text diff=java
 *.html   text diff=html
 *.css    text
+*.ts    text
 *.tsx    text
 *.sql    text
 

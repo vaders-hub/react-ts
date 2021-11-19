@@ -1,8 +1,13 @@
 import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchList } from "../modules/bbs";
 import apis from "../plugins/apis";
 
 const Board = () => {
-  const [list, setList] = useState<any[]>([]);
+  const dispatch = useDispatch();
+  const { bbsList } = useSelector((state: any) => ({
+    bbsList: state.bbs.bbsList,
+  }));
   const [inputs, setInputs] = useState({
     title: "",
     body: "",
@@ -11,23 +16,15 @@ const Board = () => {
   const { title, body } = inputs;
 
   useEffect(() => {
-    onLoad();
+    // onLoad();
     console.log("mounted");
     return () => {
       console.log("unmount");
     };
   }, []);
 
-  const onLoad = async (): Promise<any> => {
-    const result = await apis({
-      url: "/bbs/read",
-      method: "get",
-      data: {},
-    });
-    if (result) {
-      const { data } = result;
-      setList(data.body);
-    }
+  const onLoad = () => {
+    dispatch(fetchList());
   };
 
   const testtoken = async (): Promise<any> => {
@@ -75,12 +72,16 @@ const Board = () => {
         testtoken
       </button>
       <ul>
-        {list.map((v, idx) => (
+        {bbsList.map((v: any, idx: number) => (
           <li key={idx}>
             {v.title} <button>del</button>
           </li>
         ))}
       </ul>
+      <div>
+        {/* <p>bbs list {bbsList}</p> */}
+        <button onClick={onLoad}>get bbs</button>
+      </div>
     </div>
   );
 };
