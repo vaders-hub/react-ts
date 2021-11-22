@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchList } from "../modules/bbs";
 import apis from "../plugins/apis";
 
-const Board = () => {
+const Board = (): JSX.Element => {
   const dispatch = useDispatch();
   const { bbsList } = useSelector((state: any) => ({
     bbsList: state.bbs.bbsList,
