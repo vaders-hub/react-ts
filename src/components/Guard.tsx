@@ -1,8 +1,11 @@
-import React from "react";
 import { Route, Redirect } from "react-router-dom";
+import { IdxObjx } from "../interface/common";
 
-const GuardedRoute = ({ component: Component, auth, ...rest }: any) => {
-  const { extra } = rest;
+const GuardedRoute = ({
+  component: Component,
+  auth,
+  ...rest
+}: IdxObjx): JSX.Element => {
   return (
     <Route
       {...rest}

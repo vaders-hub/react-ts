@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-function HEADER() {
+function HEADER(): JSX.Element {
   return (
     <>
       <Link to="/">main </Link>

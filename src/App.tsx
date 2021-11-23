@@ -1,4 +1,3 @@
-import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import HEADER from "./layout/HEADER";
 import BODY from "./layout/BODY";

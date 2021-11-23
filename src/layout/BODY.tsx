@@ -11,7 +11,7 @@ const BODY = (): JSX.Element => {
         <Route path="/member" component={Member} />
         <Route path="/signin" component={Signin} />
         {/* <Route path="/board" component={Board} /> */}
-        <Guard path="/board" component={Board} auth={true} extra={false} />
+        <Guard path="/board" component={Board} auth={true} />
       </Switch>
     </>
   );

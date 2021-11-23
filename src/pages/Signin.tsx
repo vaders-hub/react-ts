@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import apis from "../plugins/apis";
 
-const Signin = () => {
+const Signin = (): JSX.Element => {
   const [inputs, setInputs] = useState({
     memid: "",
     mempw: "",

@@ -1,9 +1,5 @@
-function FOOTER() {
-  return (
-    <>
-      FOOT
-    </>
-  )
+function FOOTER(): JSX.Element {
+  return <>FOOT</>;
 }
 
-export default FOOTER
+export default FOOTER;

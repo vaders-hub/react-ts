@@ -1,5 +1,14 @@
-import { call, delay, put, takeEvery, takeLatest } from "redux-saga/effects";
-import apis from "../plugins/apis";
+import { delay, put, takeEvery, ForkEffect } from "redux-saga/effects";
+
+type ActionTypes = {
+  type: string;
+  r?: number | undefined;
+};
+
+type StateTypes = {
+  number: number;
+  diff: number;
+};
 
 // 액션 타입
 const INCREASE = "INCREASE";
@@ -8,13 +17,13 @@ const INCREASE_ASYNC = "INCREASE_ASYNC";
 const DECREASE_ASYNC = "DECREASE_ASYNC";
 
 // 액션 생성 함수
-export const increase = (r: any) => ({ type: INCREASE, r });
-export const decrease = () => ({ type: DECREASE });
-export const increaseAsync = () => ({ type: INCREASE_ASYNC });
-export const decreaseAsync = () => ({ type: DECREASE_ASYNC });
+export const increase = (r: number): ActionTypes => ({ type: INCREASE, r });
+export const decrease = (): ActionTypes => ({ type: DECREASE });
+export const increaseAsync = (): ActionTypes => ({ type: INCREASE_ASYNC });
+export const decreaseAsync = (): ActionTypes => ({ type: DECREASE_ASYNC });
 
 function* increaseSaga() {
-  let r: ResponseGenerator = yield onLoad();
+  const r = 1;
   yield put(increase(r)); // put은 특정 액션을 디스패치 해줍니다.
 }
 function* decreaseSaga() {
@@ -22,39 +31,22 @@ function* decreaseSaga() {
   yield put(decrease()); // put은 특정 액션을 디스패치 해줍니다.
 }
 
-export function* counterSaga() {
+export function* counterSaga(): Generator<ForkEffect<never>, void, unknown> {
   yield takeEvery(INCREASE_ASYNC, increaseSaga); // 모든 INCREASE_ASYNC 액션을 처리
   yield takeEvery(DECREASE_ASYNC, decreaseSaga); // 가장 마지막으로 디스패치된 DECREASE_ASYNC 액션만을 처리
 }
-
-interface ResponseGenerator {
-  config?: any;
-  data?: any;
-  headers?: any;
-  request?: any;
-  status?: number;
-  statusText?: string;
-}
-
-const onLoad = async (): Promise<any> => {
-  const result = await apis({
-    url: "/bbs/read",
-    method: "get",
-    data: {},
-  });
-  if (result) return result;
-};
-
 // 초깃값 (상태가 객체가 아니라 그냥 숫자여도 상관 없습니다.)
 const initialState = {
   number: 0,
   diff: 1,
 };
 
-export default function counter(state = initialState, action: any) {
+export default function counter(
+  state = initialState,
+  action: ActionTypes
+): StateTypes {
   switch (action.type) {
     case INCREASE:
-      console.log("??", action.r);
       return {
         ...state,
         number: state.number + state.diff,

@@ -27,13 +27,39 @@ const Board = (): JSX.Element => {
     dispatch(fetchList());
   };
 
+  const getCookie = async () => {
+    const result = await apis({
+      url: "/bbs/get-cookie",
+      method: "get",
+      data: {},
+    });
+
+    if (result) {
+      console.log("result", result);
+    }
+  };
+
+  const delCookie = async () => {
+    const result = await apis({
+      url: "/bbs/del-cookie",
+      method: "get",
+      data: {},
+    });
+
+    if (result) {
+      console.log("result", result);
+    }
+  };
+
   const testtoken = async (): Promise<any> => {
     const result = await apis({
       url: "/bbs/test-token",
       method: "get",
       data: {},
     });
+
     if (result) {
+      console.log("result", result);
     }
   };
 
@@ -81,6 +107,8 @@ const Board = (): JSX.Element => {
       <div>
         {/* <p>bbs list {bbsList}</p> */}
         <button onClick={onLoad}>get bbs</button>
+        <button onClick={getCookie}>get cookie</button>
+        <button onClick={delCookie}>delete cookie</button>
       </div>
     </div>
   );

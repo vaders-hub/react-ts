@@ -3,6 +3,7 @@ module.exports = {
     amd: true,
     node: true,
   },
+
   extends: ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
   parser: "@typescript-eslint/parser",
   parserOptions: {
@@ -16,9 +17,9 @@ module.exports = {
     "@typescript-eslint/explicit-function-return-type": 0,
     "@typescript-eslint/no-explicit-any": 0,
     "no-return-await": 2,
-    curly: 2,
-    "@typescript-eslint/no-inferable-types": [
-      "error",
+    curly: 0,
+    "@typescript-eslint/no-inferrable-types": [
+      "warn",
       {
         ignoreParameters: true,
         ignoreProperties: true,

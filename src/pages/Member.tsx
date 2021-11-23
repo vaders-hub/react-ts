@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import apis from "../plugins/apis";
 
-const Member = () => {
+const Member = (): JSX.Element => {
   const [inputs, setInputs] = useState({
     memid: "",
     mempw: "",
