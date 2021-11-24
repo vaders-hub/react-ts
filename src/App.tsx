@@ -3,7 +3,7 @@ import HEADER from "./layout/HEADER";
 import BODY from "./layout/BODY";
 import FOOTER from "./layout/FOOTER";
 
-function App(): JSX.Element {
+function App(): React.ReactElement {
   return (
     <div className="App">
       <Router>

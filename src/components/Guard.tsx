@@ -5,7 +5,7 @@ const GuardedRoute = ({
   component: Component,
   auth,
   ...rest
-}: IdxObjx): JSX.Element => {
+}: IdxObjx): React.ReactElement => {
   return (
     <Route
       {...rest}

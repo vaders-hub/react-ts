@@ -2,10 +2,13 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchList } from "../modules/bbs";
 import apis from "../plugins/apis";
+import { ResponseGenerator } from "../interface/common";
+import { BoardResponse } from "../apis/bbs";
+import { State } from "../interface/state";
 
-const Board = (): JSX.Element => {
+const Board = (): React.ReactElement => {
   const dispatch = useDispatch();
-  const { bbsList } = useSelector((state: any) => ({
+  const { bbsList } = useSelector((state: State) => ({
     bbsList: state.bbs.bbsList,
   }));
   const [inputs, setInputs] = useState({
@@ -27,7 +30,7 @@ const Board = (): JSX.Element => {
     dispatch(fetchList());
   };
 
-  const getCookie = async () => {
+  const getCookie = async (): Promise<void> => {
     const result = await apis({
       url: "/bbs/get-cookie",
       method: "get",
@@ -39,7 +42,7 @@ const Board = (): JSX.Element => {
     }
   };
 
-  const delCookie = async () => {
+  const delCookie = async (): Promise<void> => {
     const result = await apis({
       url: "/bbs/del-cookie",
       method: "get",
@@ -51,15 +54,14 @@ const Board = (): JSX.Element => {
     }
   };
 
-  const testtoken = async (): Promise<any> => {
+  const testtoken = async (): Promise<ResponseGenerator | undefined> => {
     const result = await apis({
       url: "/bbs/test-token",
       method: "get",
       data: {},
     });
-
     if (result) {
-      console.log("result", result);
+      return result;
     }
   };
 
@@ -72,7 +74,7 @@ const Board = (): JSX.Element => {
     });
   };
 
-  const onWrite = async (): Promise<any> => {
+  const onWrite = async (): Promise<void> => {
     const result = await apis({
       url: "/bbs/write",
       method: "post",
@@ -98,11 +100,13 @@ const Board = (): JSX.Element => {
         testtoken
       </button>
       <ul>
-        {bbsList.map((v: any, idx: number) => (
-          <li key={idx}>
-            {v.title} <button>del</button>
-          </li>
-        ))}
+        {bbsList.map(
+          (v: BoardResponse, idx: number): React.ReactNode => (
+            <li key={idx}>
+              {v.title} <button>del</button>
+            </li>
+          )
+        )}
       </ul>
       <div>
         {/* <p>bbs list {bbsList}</p> */}
