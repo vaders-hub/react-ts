@@ -7,10 +7,14 @@ export interface BoardResponse {
 }
 
 export const onLoad = async (): Promise<BoardResponse | undefined> => {
-  const result = await apis({
-    url: "/bbs/read",
-    method: "get",
-    data: {},
-  });
-  if (result) return result.data as Promise<BoardResponse>;
+  try {
+    const result = await apis({
+      url: "/bbs/read",
+      method: "get",
+      data: {},
+    });
+    if (result) return result.data as Promise<BoardResponse>;
+  } catch (e) {
+    console.log("onLoad e", e);
+  }
 };
