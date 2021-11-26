@@ -2,10 +2,12 @@ import { combineReducers } from "redux";
 import { AllEffect, ForkEffect, all } from "redux-saga/effects";
 import bbs, { bbsSaga } from "./bbs";
 import counter, { counterSaga } from "./counter";
+import member, { membersSaga } from "./member";
 
 const rootReducer = combineReducers({
   bbs,
   counter,
+  member,
 });
 
 export function* rootSaga(): Generator<
@@ -13,7 +15,7 @@ export function* rootSaga(): Generator<
   void,
   unknown
 > {
-  yield all([bbsSaga(), counterSaga()]);
+  yield all([bbsSaga(), counterSaga(), membersSaga()]);
 }
 
 export default rootReducer;

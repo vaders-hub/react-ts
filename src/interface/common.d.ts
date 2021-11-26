@@ -9,6 +9,7 @@ export interface ResponseGenerator {
   request?: any;
   status?: number;
   statusText?: string;
+  message?: string;
 }
 
 export declare interface AppProps {

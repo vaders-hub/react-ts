@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import apis from "../plugins/apis";
+import { passAuth } from "../modules/member";
 
 const Signin = (): React.ReactElement => {
+  const dispatch = useDispatch();
   const [inputs, setInputs] = useState({
     memid: "",
     mempw: "",
@@ -10,16 +13,11 @@ const Signin = (): React.ReactElement => {
   const { memid, mempw } = inputs;
 
   useEffect(() => {
-    onLoad();
     console.log("mounted");
     return () => {
       console.log("unmount");
     };
   }, []);
-
-  const onLoad = async (): Promise<any> => {
-    console.log("loaded");
-  };
 
   const onChange: React.ChangeEventHandler<HTMLInputElement> = (e): void => {
     const { value, name } = e.target;
@@ -30,15 +28,7 @@ const Signin = (): React.ReactElement => {
   };
 
   const onSignin = async (): Promise<any> => {
-    const result = await apis({
-      url: "/members/signin",
-      method: "post",
-      data: {
-        memid: memid,
-        mempw: mempw,
-      },
-    });
-    console.log("result", result);
+    dispatch(passAuth(memid, mempw));
   };
 
   const onEnc = async (): Promise<any> => {

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import apis from "../plugins/apis";
+import { useSelector, useDispatch } from "react-redux";
+import { signIn } from "../modules/member";
 
 const Member = (): React.ReactElement => {
   const [inputs, setInputs] = useState({
@@ -25,15 +26,7 @@ const Member = (): React.ReactElement => {
   };
 
   const onRegister = async (): Promise<any> => {
-    const result = await apis({
-      url: "/members/signup",
-      method: "post",
-      data: {
-        memid: memid,
-        mempw: mempw,
-      },
-    });
-    console.log("result", result);
+    // dispatchEvent(signIn(memid, mempw));
   };
 
   return (
