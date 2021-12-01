@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import apis from "../plugins/apis";
-import { passAuth } from "../modules/member";
+import { passAuth, signOut } from "../modules/member";
+import Input from "../components/Input";
 
 const Signin = (): React.ReactElement => {
   const dispatch = useDispatch();
+  const { member }: any = useSelector((state) => state);
+  const [signedIn, setSignedIn] = useState(false); // local
+
   const [inputs, setInputs] = useState({
     memid: "",
     mempw: "",
@@ -13,9 +17,11 @@ const Signin = (): React.ReactElement => {
   const { memid, mempw } = inputs;
 
   useEffect(() => {
-    console.log("mounted");
+    // state obsever
+    // observeStore(store, () => store.getState().member, () => {});
     return () => {
-      console.log("unmount");
+      // clean up local state
+      // setSignedIn(false);
     };
   }, []);
 
@@ -29,6 +35,11 @@ const Signin = (): React.ReactElement => {
 
   const onSignin = async (): Promise<any> => {
     dispatch(passAuth(memid, mempw));
+    setInputs({ memid: "", mempw: "" });
+  };
+
+  const onSignOut = () => {
+    dispatch(signOut());
   };
 
   const onEnc = async (): Promise<any> => {
@@ -55,16 +66,13 @@ const Signin = (): React.ReactElement => {
 
   return (
     <div>
-      <h2>Signin</h2>
-      <div>
-        <input
-          type="text"
-          name="memid"
-          placeholder="id"
-          onChange={onChange}
-          value={memid}
-        />
-        <input
+      <div
+        style={
+          member.signedIn === true ? { display: "none" } : { display: "block" }
+        }
+      >
+        <Input type="text" name="memid" onChange={onChange} value={memid} />
+        <Input
           type="password"
           name="mempw"
           placeholder="pw"
@@ -79,6 +87,15 @@ const Signin = (): React.ReactElement => {
         </button>
         <button type="button" onClick={onDec}>
           dec
+        </button>
+      </div>
+      <div
+        style={
+          member.signedIn === true ? { display: "block" } : { display: "none" }
+        }
+      >
+        <button type="button" onClick={onSignOut}>
+          sign-out
         </button>
       </div>
     </div>

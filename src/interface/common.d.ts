@@ -1,6 +1,10 @@
-export interface IdxObjx {
-  [key: string | number]: any;
-}
+export type ReactComp = {
+  component: () => React.ReactElement;
+};
+
+export type IdxSign = {
+  [key: string | number]: unknown;
+};
 
 export interface ResponseGenerator {
   config?: any;

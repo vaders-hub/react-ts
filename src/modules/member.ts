@@ -1,11 +1,20 @@
-import { call, put, select, takeEvery, ForkEffect } from "redux-saga/effects";
+import {
+  call,
+  put,
+  take,
+  select,
+  takeEvery,
+  ForkEffect,
+} from "redux-saga/effects";
 import { ResponseGenerator } from "../interface/common";
-import { onRegister, onSignin } from "../apis/member";
+import { onSignin } from "../apis/member";
 import { Action, State } from "../interface/state";
+import { assert } from "console";
 
 const memberActions = {
   SIGN_INFO: "SIGN_INFO",
   SIGN_IN: "SIGN_IN",
+  SIGN_OUT: "SIGN_OUT",
   CLEAR_INFO: "CLEAR_INFO",
   SIGN_UP: "SIGN_UP",
 };
@@ -25,16 +34,37 @@ export const signIn = (data: string | undefined): any => ({
   type: memberActions.SIGN_IN,
   data,
 });
+export const signOut = (): any => ({
+  type: memberActions.SIGN_OUT,
+});
 export const clearInfo = (): any => ({
   type: memberActions.CLEAR_INFO,
 });
 export const getMember = (state: State): State => state.member;
 
-function* signInSaga(): any {
-  const { memid, mempw }: any = yield select(getMember);
-  const result: ResponseGenerator = yield onSignin(memid, mempw);
-  if (result) yield put(signIn(result.message));
-  yield put(clearInfo());
+const callTest = (a: any) => {
+  return new Promise((rv, rj) => {
+    return a ? rv("1") : rj;
+  });
+};
+
+function* signInSaga(action: any) {
+  // const { memid, mempw }: any = yield select(getMember);
+  while (true) {
+    try {
+      const { memid, mempw }: any = action;
+      const pollingAction: ResponseGenerator = yield take(
+        memberActions.SIGN_INFO
+      );
+      console.log("pollingAction", pollingAction);
+      const result: ResponseGenerator = yield call(onSignin, memid, mempw);
+      if (result) yield put(signIn(result.message));
+      const rsp: ResponseGenerator = yield call(callTest, action);
+      yield put(clearInfo());
+    } catch (e) {
+      console.log("e", e);
+    }
+  }
 }
 
 export function* membersSaga(): Generator<ForkEffect<never>, void, unknown> {
@@ -59,6 +89,11 @@ const member = (state: any = initialState, action: Action): Action => {
         ...state,
         memid: "",
         mempw: "",
+      };
+    case memberActions.SIGN_OUT:
+      return {
+        ...state,
+        signedIn: false,
       };
     default:
       return state;

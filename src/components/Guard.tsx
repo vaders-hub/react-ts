@@ -1,16 +1,20 @@
 import { Route, Redirect } from "react-router-dom";
-import { IdxObjx } from "../interface/common";
+import { IdxSign, ReactComp } from "../interface/common";
 
+// const GuardedRoute: FunctionComponent<ReactComp & IdxSign> = ({
 const GuardedRoute = ({
   component: Component,
   auth,
   ...rest
-}: IdxObjx): React.ReactElement => {
+}: ReactComp & IdxSign): React.ReactElement => {
+  const cond = (props: IdxSign) => {
+    return <Component {...props} />;
+  };
   return (
     <Route
       {...rest}
       render={(props) =>
-        auth === true ? <Component {...props} /> : <Redirect to="/" />
+        auth === true ? cond({ props, rest }) : <Redirect to="/signin" />
       }
     />
   );
