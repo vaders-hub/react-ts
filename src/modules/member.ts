@@ -1,7 +1,9 @@
 import {
+  all,
   call,
   put,
   take,
+  fork,
   select,
   takeEvery,
   ForkEffect,
@@ -49,26 +51,29 @@ const callTest = (a: any) => {
 };
 
 function* signInSaga(action: any) {
-  // const { memid, mempw }: any = yield select(getMember);
-  while (true) {
-    try {
-      const { memid, mempw }: any = action;
-      const pollingAction: ResponseGenerator = yield take(
-        memberActions.SIGN_INFO
-      );
-      console.log("pollingAction", pollingAction);
-      const result: ResponseGenerator = yield call(onSignin, memid, mempw);
-      if (result) yield put(signIn(result.message));
-      const rsp: ResponseGenerator = yield call(callTest, action);
-      yield put(clearInfo());
-    } catch (e) {
-      console.log("e", e);
-    }
+  try {
+    const { memid, mempw }: any = action;
+
+    const result: ResponseGenerator = yield call(onSignin, memid, mempw);
+    const a: ResponseGenerator = yield put({ type: memberActions.SIGN_IN, payload: result })
+
+    console.log('result', a)
+    const rsp: ResponseGenerator = yield call(callTest, action);
+    yield put(clearInfo());
+  } catch (e) {
+    console.log("e", e);
   }
 }
 
-export function* membersSaga(): Generator<ForkEffect<never>, void, unknown> {
+function* takeTest(action: any) {
+  const pollingAction: ResponseGenerator = yield take(memberActions.SIGN_IN);
+  const pollingStatus = pollingAction.payload.status;
+  console.log('pollingAction', pollingAction)
+}
+
+export function* membersSaga(): any {
   yield takeEvery(memberActions.SIGN_INFO, signInSaga);
+  // yield all([fork(takeTest, memberActions.SIGN_INFO)]);
 }
 
 const member = (state: any = initialState, action: Action): Action => {
