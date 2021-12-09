@@ -55,9 +55,12 @@ function* signInSaga(action: any) {
     const { memid, mempw }: any = action;
 
     const result: ResponseGenerator = yield call(onSignin, memid, mempw);
-    const a: ResponseGenerator = yield put({ type: memberActions.SIGN_IN, payload: result })
+    const a: ResponseGenerator = yield put({
+      type: memberActions.SIGN_IN,
+      payload: result,
+    });
 
-    console.log('result', a)
+    console.log("result", a);
     const rsp: ResponseGenerator = yield call(callTest, action);
     yield put(clearInfo());
   } catch (e) {
@@ -68,7 +71,7 @@ function* signInSaga(action: any) {
 function* takeTest(action: any) {
   const pollingAction: ResponseGenerator = yield take(memberActions.SIGN_IN);
   const pollingStatus = pollingAction.payload.status;
-  console.log('pollingAction', pollingAction)
+  console.log("pollingAction", pollingAction);
 }
 
 export function* membersSaga(): any {
