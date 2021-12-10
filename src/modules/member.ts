@@ -53,15 +53,13 @@ const callTest = (a: any) => {
 function* signInSaga(action: any) {
   try {
     const { memid, mempw }: any = action;
-
     const result: ResponseGenerator = yield call(onSignin, memid, mempw);
-    const a: ResponseGenerator = yield put({
+
+    yield put({
       type: memberActions.SIGN_IN,
       payload: result,
     });
-
-    console.log("result", a);
-    const rsp: ResponseGenerator = yield call(callTest, action);
+    yield call(callTest, action);
     yield put(clearInfo());
   } catch (e) {
     console.log("e", e);
@@ -80,6 +78,7 @@ export function* membersSaga(): any {
 }
 
 const member = (state: any = initialState, action: Action): Action => {
+  console.log("action", action);
   switch (action.type) {
     case memberActions.SIGN_INFO:
       return {
@@ -90,7 +89,7 @@ const member = (state: any = initialState, action: Action): Action => {
     case memberActions.SIGN_IN:
       return {
         ...state,
-        signedIn: action.data === "로그인 성공" ? true : false,
+        signedIn: action.payload.message === "로그인 성공" ? true : false,
       };
     case memberActions.CLEAR_INFO:
       return {

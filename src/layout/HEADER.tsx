@@ -7,6 +7,7 @@ function HEADER(): JSX.Element {
       <Link to="/member">member </Link>
       <Link to="/signin">signin </Link>
       <Link to="/board">board </Link>
+      <Link to="/list">list </Link>
     </>
   );
 }

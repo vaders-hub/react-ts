@@ -7,7 +7,6 @@ import Input from "../components/Input";
 const Signin = (): React.ReactElement => {
   const dispatch = useDispatch();
   const { member }: any = useSelector((state) => state);
-  const [signedIn, setSignedIn] = useState(false); // local
 
   const [inputs, setInputs] = useState({
     memid: "",

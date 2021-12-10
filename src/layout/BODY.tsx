@@ -5,6 +5,7 @@ import Guard from "../components/Guard";
 import Board from "../pages/Board";
 import Member from "../pages/Member";
 import Signin from "../pages/Signin";
+import List from "../pages/List";
 
 const BODY = (): React.ReactElement => {
   const { member }: any = useSelector((state) => state);
@@ -26,6 +27,7 @@ const BODY = (): React.ReactElement => {
           auth={member.signedIn}
           extra="something"
         />
+        <Route path="/list" component={List} />
       </Switch>
     </>
   );
