@@ -21,11 +21,16 @@ const memberActions = {
   SIGN_UP: "SIGN_UP",
 };
 
-const initialState = {
+const initialState = () => ({
   signedIn: false,
   memid: "",
   mempw: "",
-};
+});
+// const initialState = {
+//   signedIn: false,
+//   memid: "",
+//   mempw: "",
+// };
 
 export const passAuth = (memid: string, mempw: string): any => ({
   type: memberActions.SIGN_INFO,
