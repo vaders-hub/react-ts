@@ -9,7 +9,7 @@ import {
   ForkEffect,
 } from "redux-saga/effects";
 import { ResponseGenerator } from "../interface/common";
-import { onSignin } from "../apis/member";
+import { onSignin, onRegister } from "../apis/member";
 import { Action, State } from "../interface/state";
 import { assert } from "console";
 
@@ -19,18 +19,19 @@ const memberActions = {
   SIGN_OUT: "SIGN_OUT",
   CLEAR_INFO: "CLEAR_INFO",
   SIGN_UP: "SIGN_UP",
+  REGISTER: "REGISTER",
 };
 
-const initialState = () => ({
-  signedIn: false,
-  memid: "",
-  mempw: "",
-});
-// const initialState = {
+// const initialState = () => ({
 //   signedIn: false,
 //   memid: "",
 //   mempw: "",
-// };
+// });
+const initialState = {
+  signedIn: false,
+  memid: "",
+  mempw: "",
+};
 
 export const passAuth = (memid: string, mempw: string): any => ({
   type: memberActions.SIGN_INFO,
@@ -48,6 +49,12 @@ export const clearInfo = (): any => ({
   type: memberActions.CLEAR_INFO,
 });
 export const getMember = (state: State): State => state.member;
+
+export const register = (memid: string, mempw: string): any => ({
+  type: memberActions.REGISTER,
+  memid,
+  mempw,
+});
 
 const callTest = (a: any) => {
   return new Promise((rv, rj) => {
@@ -71,7 +78,18 @@ function* signInSaga(action: any) {
   }
 }
 
-function* takeTest(action: any) {
+function* registerSaga(action: Action) {
+  try {
+    const { memid, mempw }: any = action;
+    const result: ResponseGenerator = yield call(onRegister, memid, mempw);
+
+    console.log("result", result);
+  } catch (e) {
+    console.log("e", e);
+  }
+}
+
+function* takeTest(action: Action) {
   const pollingAction: ResponseGenerator = yield take(memberActions.SIGN_IN);
   const pollingStatus = pollingAction.payload.status;
   console.log("pollingAction", pollingAction);
@@ -79,11 +97,11 @@ function* takeTest(action: any) {
 
 export function* membersSaga(): any {
   yield takeEvery(memberActions.SIGN_INFO, signInSaga);
+  yield takeEvery(memberActions.REGISTER, registerSaga);
   // yield all([fork(takeTest, memberActions.SIGN_INFO)]);
 }
 
 const member = (state: any = initialState, action: Action): Action => {
-  console.log("action", action);
   switch (action.type) {
     case memberActions.SIGN_INFO:
       return {
@@ -106,6 +124,12 @@ const member = (state: any = initialState, action: Action): Action => {
       return {
         ...state,
         signedIn: false,
+      };
+    case memberActions.REGISTER:
+      return {
+        ...state,
+        memid: action.memid,
+        mempw: action.mempw,
       };
     default:
       return state;

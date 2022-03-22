@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
+import { Route, Switch } from "react-router";
+import { IRoute } from "../../interface/common.js";
+import RouteWithSubRoutes from "../../components/RouteWithSubRoutes";
 import { useSelector, useDispatch } from "react-redux";
-import { signIn } from "../modules/member";
+import { register } from "../../modules/member";
 
 const Member = (): React.ReactElement => {
+  const dispatch = useDispatch();
   const [inputs, setInputs] = useState({
     memid: "",
     mempw: "",
@@ -26,12 +30,11 @@ const Member = (): React.ReactElement => {
   };
 
   const onRegister = async (): Promise<any> => {
-    // dispatchEvent(signIn(memid, mempw));
+    dispatch(register(memid, mempw));
   };
 
   return (
     <div>
-      <h2>Member</h2>
       <div>
         <input
           type="text"

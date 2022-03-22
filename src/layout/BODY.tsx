@@ -1,36 +1,21 @@
-import { useEffect, useState } from "react";
-import { Route, Switch } from "react-router-dom";
-import { useSelector } from "react-redux";
-import Guard from "../components/Guard";
-import Board from "../pages/Board";
-import Member from "../pages/Member";
-import Signin from "../pages/Signin";
-import List from "../pages/List";
+import React from "react";
+import { Route, Switch } from "react-router";
+import { IRoute } from "../interface/common.js";
+import RouteWithSubRoutes from "../components/RouteWithSubRoutes";
+import HOME from "../pages/HOME";
 
-const BODY = (): React.ReactElement => {
-  const { member }: any = useSelector((state) => state);
+interface IProps {
+  routes: IRoute[];
+}
 
-  useEffect(() => {
-    return () => {
-      console.log("body unmount");
-    };
-  }, []);
+const Router: React.FC<IProps> = ({ routes }) => {
   return (
-    <>
-      <Switch>
-        <Route path="/member" component={Member} />
-        <Route path="/signin" component={Signin} />
-        {/* <Route path="/board" component={Board} /> */}
-        <Guard
-          path="/board"
-          component={Board}
-          auth={member.signedIn}
-          extra="something"
-        />
-        <Route path="/list" component={List} />
-      </Switch>
-    </>
+    <Switch>
+      {routes.map((route: IRoute) => {
+        return <RouteWithSubRoutes key={route.path} {...route} />;
+      })}
+    </Switch>
   );
 };
 
-export default BODY;
+export default Router;
