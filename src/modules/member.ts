@@ -9,7 +9,7 @@ import {
   ForkEffect,
 } from "redux-saga/effects";
 import { ResponseGenerator } from "../interface/common";
-import { onSignin } from "../apis/member";
+import { onSignin, onRegister } from "../apis/member";
 import { Action, State } from "../interface/state";
 import { assert } from "console";
 
@@ -19,8 +19,14 @@ const memberActions = {
   SIGN_OUT: "SIGN_OUT",
   CLEAR_INFO: "CLEAR_INFO",
   SIGN_UP: "SIGN_UP",
+  REGISTER: "REGISTER",
 };
 
+// const initialState = () => ({
+//   signedIn: false,
+//   memid: "",
+//   mempw: "",
+// });
 const initialState = {
   signedIn: false,
   memid: "",
@@ -44,6 +50,12 @@ export const clearInfo = (): any => ({
 });
 export const getMember = (state: State): State => state.member;
 
+export const register = (memid: string, mempw: string): any => ({
+  type: memberActions.REGISTER,
+  memid,
+  mempw,
+});
+
 const callTest = (a: any) => {
   return new Promise((rv, rj) => {
     return a ? rv("1") : rj;
@@ -53,26 +65,39 @@ const callTest = (a: any) => {
 function* signInSaga(action: any) {
   try {
     const { memid, mempw }: any = action;
-
     const result: ResponseGenerator = yield call(onSignin, memid, mempw);
-    const a: ResponseGenerator = yield put({ type: memberActions.SIGN_IN, payload: result })
 
-    console.log('result', a)
-    const rsp: ResponseGenerator = yield call(callTest, action);
+    yield put({
+      type: memberActions.SIGN_IN,
+      payload: result,
+    });
+    yield call(callTest, action);
     yield put(clearInfo());
   } catch (e) {
     console.log("e", e);
   }
 }
 
-function* takeTest(action: any) {
+function* registerSaga(action: Action) {
+  try {
+    const { memid, mempw }: any = action;
+    const result: ResponseGenerator = yield call(onRegister, memid, mempw);
+
+    console.log("result", result);
+  } catch (e) {
+    console.log("e", e);
+  }
+}
+
+function* takeTest(action: Action) {
   const pollingAction: ResponseGenerator = yield take(memberActions.SIGN_IN);
   const pollingStatus = pollingAction.payload.status;
-  console.log('pollingAction', pollingAction)
+  console.log("pollingAction", pollingAction);
 }
 
 export function* membersSaga(): any {
   yield takeEvery(memberActions.SIGN_INFO, signInSaga);
+  yield takeEvery(memberActions.REGISTER, registerSaga);
   // yield all([fork(takeTest, memberActions.SIGN_INFO)]);
 }
 
@@ -87,7 +112,7 @@ const member = (state: any = initialState, action: Action): Action => {
     case memberActions.SIGN_IN:
       return {
         ...state,
-        signedIn: action.data === "로그인 성공" ? true : false,
+        signedIn: action.payload.message === "로그인 성공" ? true : false,
       };
     case memberActions.CLEAR_INFO:
       return {
@@ -99,6 +124,12 @@ const member = (state: any = initialState, action: Action): Action => {
       return {
         ...state,
         signedIn: false,
+      };
+    case memberActions.REGISTER:
+      return {
+        ...state,
+        memid: action.memid,
+        mempw: action.mempw,
       };
     default:
       return state;

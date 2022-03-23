@@ -6,6 +6,7 @@ export type Action = {
   memid?: string;
   mempw?: string;
   data?: string;
+  payload?: any;
 };
 
 export type State = {

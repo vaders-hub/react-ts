@@ -12,10 +12,13 @@
     "@types/react": "^17.0.34",
     "@types/react-dom": "^17.0.11",
     "axios": "^0.24.0",
-    "http-proxy-middleware": "^2.0.1",
+    "i18next": "^21.6.14",
+    "query-string": "^7.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-intl": "^5.24.7",
     "react-redux": "^7.2.6",
+    "react-router-config": "^5.1.1",
     "react-router-dom": "^5.3.0",
     "react-scripts": "4.0.3",
     "redux": "^4.1.2",
@@ -26,8 +29,9 @@
     "web-vitals": "^1.1.2"
   },
   "scripts": {
-    "start": "set HTTPS=true&&react-scripts start",
-    "build": "react-scripts build",
+    "start": "set NODE_ENV=development && react-app-rewired start",
+    "start:https": "set NODE_ENV=development && set HTTPS=true&&react-app-rewired start",
+    "build": "react-app-rewired build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -50,6 +54,9 @@
     ]
   },
   "devDependencies": {
-    "@types/react-router-dom": "^5.3.2"
+    "@types/http-proxy-middleware": "^1.0.0",
+    "@types/react-router-dom": "^5.3.2",
+    "http-proxy-middleware": "^1.2.0",
+    "react-app-rewired": "^2.2.1"
   }
 }

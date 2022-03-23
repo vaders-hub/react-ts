@@ -3,10 +3,12 @@ import { AllEffect, ForkEffect, all } from "redux-saga/effects";
 import bbs, { bbsSaga } from "./bbs";
 import counter, { counterSaga } from "./counter";
 import member, { membersSaga } from "./member";
+import lang from "./lang";
 
 const rootReducer = combineReducers({
   bbs,
   counter,
+  lang,
   member,
 });
 

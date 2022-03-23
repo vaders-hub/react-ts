@@ -3,7 +3,7 @@ import { ResponseGenerator } from "../interface/common";
 
 let acTkn = "";
 const apis = Axios.create({
-  baseURL: "https://localhost:443",
+  // baseURL: "https://localhost:443",
   timeout: 5000,
   withCredentials: true,
   headers: {
