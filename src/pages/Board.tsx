@@ -67,7 +67,6 @@ const Board = (): React.ReactElement => {
 
   const onChange: React.ChangeEventHandler<HTMLInputElement> = (e): void => {
     const { value, name } = e.target;
-    console.log("onchange", value);
     setInputs({
       ...inputs,
       [name]: value,
