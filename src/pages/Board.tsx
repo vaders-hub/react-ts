@@ -101,7 +101,7 @@ const Board = (): React.ReactElement => {
       <ul>
         {bbsList.map(
           (v: BoardResponse, idx: number): React.ReactNode => (
-            <li key={idx}>
+            <li key={v.title}>
               {v.title} <button>del</button>
             </li>
           )
